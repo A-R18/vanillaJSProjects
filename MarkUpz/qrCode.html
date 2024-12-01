@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/Sheetz/qrCode.css">
+    <!-- <link rel="stylesheet" href="output.css"> -->
+    <title>QR-Code Generator</title>
+  </head>
+  <body>
+    <nav class="nav-bar">
+        <h3>QR-Code Generator</h3>
+
+    </nav>
+    <div class="container">
+        <div>
+            <section class="first-sec">
+                <h2>QR Code Generator</h2>
+                <p>
+                  QR codes allow smartphones users to access websites simply and quickly
+                  without the difficulty of typing the link address of a website.
+                </p>
+                <p>Enter your URL below to genrate a QR code and download the image.</p>
+                <form id="qr-form">
+                <input id="url"  placeholder="Enter the URL" type="url" required />
+                <select name="" required id="size">
+                  <option  diabled selected>Please select size</option>
+                  <option value="100 ">100 x 100</option>
+                  <option value="200 ">200 x 200</option>
+                  <option value="300 ">300 x 300</option>
+                  <option value="400 ">400 x 400</option>
+                  <option value="500 ">500 x 500</option>
+                  <option value="600 ">600 x 600</option>
+                </select>
+                <button id="qr-btn">Generate Code</button>
+              </form>
+              </section>
+
+        </div>
+          
+            
+        
+        <div>
+        
+            <img id="qr-code-img" src="/img/qr-code-svgrepo-com (2).svg" alt="qr_image">
+        </div>
+     
+
+</div>
+<div id="qr-code-container">
+<div id="qrcodeimg" class="generated"></div>
+<div><img src="/img/spinnerWheel.svg" id="spinner" alt="loading"></div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="/Scriptz/qrCode.js"></script>
+  </body>
+</html>
