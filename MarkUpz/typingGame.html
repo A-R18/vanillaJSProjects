@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome to game!!</title>
+    <link rel="stylesheet" href="output.css" />
+  </head>
+  <body class="bg-gray-800">
+    <nav>
+      <div class="bg-gray-500 text-center p-4 text-3xl text-white font-bold">
+        Word Beater
+      </div>
+    </nav>
+    <section>
+      <div
+        class="flex flex-col gap-6 sm:w-[40%] md:w-[35%] mx-auto p-8 text-white"
+      >
+        <h4>Type the given word in <span id="seconds-time"></span> seconds:</h4>
+        <h3 id="current-word" class="text-4xl">...</h3>
+        <form class="justify-center items-center">
+          <input
+            class="text-black p-2 w-[100%] mx-auto rounded-md"
+            id="typing-text"
+            type="text"
+            placeholder="Type here==> "
+            autofocus
+          />
+        </form>
+        <div class="mx-auto text-4xl" id="game-status">&nbsp;</div>
+
+        <div class="flex justify-between text-2xl">
+          <div>Remaining Time:<span id="time-left"></span></div>
+          <div >Total Score: <span id="total-score"></span></div>
+        </div>
+
+        <div class="bg-gray-600 p-4 rounded-md">
+          <div class="text-center"><strong>Instructions:</strong></div>
+          <p class="text-sm">
+            Type each word in given amount of seconds to score. To play again
+            just type the current word. Your score will reset.
+          </p>
+        </div>
+      </div>
+    </section>
+    <script src="/Scriptz/typingScript.js"></script>
+  </body>
+</html>
