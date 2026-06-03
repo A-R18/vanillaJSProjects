@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ambient Sound Mixer - Create Your Perfect Atmosphere</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome for Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body
+    id="body"
+    class="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 text-white transition-all duration-500"
+  >
+    <!-- Header -->
+    <header class="container mx-auto px-4 py-6">
+      <nav class="flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+          <i class="fas fa-music text-2xl text-purple-400"></i>
+          <h1
+            class="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent"
+          >
+            Ambient Mixer
+          </h1>
+        </div>
+
+        <!-- Theme Toggle -->
+        <button
+          type="button"
+          onclick=""
+          id="themeToggle"
+          class="p-2 rounded-lg bg-white/10 hover:bg-white/20 transition-all duration-300"
+        >
+          <i class="fas fa-sun text-yellow-300"></i>
+        </button>
+      </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+      <!-- Controls Section -->
+      <section class="mb-8">
+        <div class="flex flex-wrap gap-4 justify-center items-center">
+          <!-- Master Volume -->
+          <div
+            class="bg-white/10 backdrop-blur-md rounded-xl p-4 flex items-center space-x-3"
+          >
+            <i class="fas fa-volume-high text-xl"></i>
+            <label for="masterVolume" class="text-sm">Master</label>
+            <input
+              type="range"
+              id="masterVolume"
+              min="0"
+              max="100"
+              value="50"
+              class="w-24 accent-purple-500"
+            />
+            <span id="masterVolumeValue" class="text-sm w-8">50</span>
+          </div>
+
+          <!-- Timer -->
+          <div
+            class="bg-white/10 backdrop-blur-md rounded-xl p-4 flex items-center space-x-3"
+          >
+            <i class="fas fa-clock text-xl"></i>
+            <select
+              id="timerSelect"
+              class="bg-transparent border border-white/30 rounded-lg px-3 py-1 text-sm"
+            >
+              <option value="0">No Timer</option>
+              <option value="5">5 min</option>
+              <option value="15">15 min</option>
+              <option value="30">30 min</option>
+              <option value="60">60 min</option>
+            </select>
+            <span id="timerDisplay" class="text-sm hidden"></span>
+          </div>
+
+          <!-- Play/Pause All -->
+          <button
+            type="button"
+            id="playPauseAll"
+            class="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105"
+          >
+            <i class="fas fa-play mr-2"></i>
+            <span>Play All</span>
+          </button>
+
+          <!-- Reset -->
+          <button
+            type="button"
+            id="resetAll"
+            class="bg-white/10 hover:bg-white/20 px-6 py-3 rounded-xl font-semibold transition-all duration-300"
+          >
+            <i class="fas fa-undo mr-2"></i>
+            Reset
+          </button>
+        </div>
+      </section>
+
+      <!-- Sound Cards Grid -->
+      <section
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8"
+      >
+        <!-- Sound cards will be dynamically generated here -->
+      </section>
+
+      <!-- Presets Section -->
+      <section class="bg-white/10 backdrop-blur-md rounded-2xl p-6">
+        <h2 class="text-xl font-bold mb-4 flex items-center">
+          <i class="fas fa-bookmark mr-2 text-purple-400"></i>
+          Presets
+        </h2>
+
+        <div class="flex flex-wrap gap-3 mb-4">
+          <!-- Preset buttons will be dynamically generated here -->
+          <div id="presetButtons" class="flex flex-wrap gap-3">
+            <!-- Default presets -->
+            <button
+              type="button"
+              class="preset-btn bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg transition-all duration-300"
+              data-preset="focus"
+            >
+              <i class="fas fa-brain mr-2"></i>Focus
+            </button>
+            <button
+              type="button"
+              class="preset-btn bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg transition-all duration-300"
+              data-preset="relax"
+            >
+              <i class="fas fa-spa mr-2"></i>Relax
+            </button>
+            <button
+              type="button"
+              class="preset-btn bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg transition-all duration-300"
+              data-preset="sleep"
+            >
+              <i class="fas fa-bed mr-2"></i>Sleep
+            </button>
+          </div>
+
+          <!-- Save Current Mix -->
+          <button
+            type="button"
+            id="savePreset"
+            class="bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600 px-4 py-2 rounded-lg transition-all duration-300"
+          >
+            <i class="fas fa-save mr-2"></i>Save Mix
+          </button>
+        </div>
+
+        <!-- Custom Presets -->
+        <div id="customPresets" class="flex flex-wrap gap-3">
+          <!-- Custom saved presets will appear here -->
+        </div>
+      </section>
+    </main>
+
+    <!-- Save Preset Modal -->
+    <div
+      id="savePresetModal"
+      class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-50"
+    >
+      <div
+        class="bg-gradient-to-br from-purple-900 to-indigo-900 p-6 rounded-2xl max-w-md w-full mx-4 border border-white/20"
+      >
+        <h3 class="text-xl font-bold mb-4">Save Your Mix</h3>
+        <input
+          type="text"
+          id="presetName"
+          placeholder="Enter preset name..."
+          class="w-full px-4 py-2 bg-white/10 border border-white/30 rounded-lg mb-4 placeholder-white/50"
+        />
+        <div class="flex gap-3">
+          <button
+            type="button"
+            id="confirmSave"
+            class="flex-1 bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600 px-4 py-2 rounded-lg transition-all duration-300"
+          >
+            Save
+          </button>
+          <button
+            type="button"
+            id="cancelSave"
+            class="flex-1 bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg transition-all duration-300"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Script here -->
+     <script src="./js/app.js" type="module"></script>
+  </body>
+</html>

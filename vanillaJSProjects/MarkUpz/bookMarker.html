@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mark-It</title>
+    <link rel="stylesheet" href="output.css" />
+</head>
+
+<body>
+    <div class="w-[90%] h-[8%] md:h-[90px] md:w-[90%] my-4 text-blue-800 font-bold text-4xl mx-auto">
+        Bookmarking App
+    </div>
+    <hr class="text-lg text-red-600" />
+    <div class="bg-gray-300 mx-auto w-[90%] h-[60%] md:h-[370px] md:w-[50%] my-4">
+        <form action="" class="flex flex-col" id="bm-form">
+            <label class="font-bold text-xl w-[80%] mt-2 p-2 mx-auto rounded-md" for="s-name">Site Name</label>
+            <input placeholder="Name of Website" class="w-[80%] focus:outline-none mt-2 p-4 mx-auto bg-gray-100" id="s-name" type="text" />
+            <label class="font-bold text-xl w-[80%] mt-2 p-2 mx-auto rounded-md" for="s-url">Site Url</label>
+            <input placeholder="Website URL" class="w-[80%] mt-2 p-4 focus:outline-none mx-auto bg-gray-100" id="s-url" type="url" />
+            <button id=""
+                class="bg-orange-600 p-2.5 mx-[72px] text-white font-bold text-center w-24 mt-8 hover:bg-orange-200 hover:text-orange-600 hover:border-orange-950 hover:border-2">
+                Submit
+            </button>
+          
+        </form>
+    </div>
+    <div id="bookmark-results" ></div>
+
+
+    <script src="/Scriptz/bookMarker.js"></script>
+</body>
+
+</html>

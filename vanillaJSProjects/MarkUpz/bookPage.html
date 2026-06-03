@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Keeper</title>
+    <link rel="stylesheet" href="/Sheetz/style.css">
+</head>
+<body>
+    <div id="logo">
+<div  class="logo">
+    <a href="https://www.facebook.com"><img src="/img/mybooklist-logo.png" alt="bookzLogo"></a>
+</div> 
+
+<form action="" id="book-submit-form">
+    <label for="title">Book Title</label>
+    <input type="text" name="title" id="title">
+    
+    <label for="author">Author</label>
+    <input type="text" name="author" id="author">
+
+    <label for="isbn">ISBN</label>
+    <input type="text" name="isbn" id="isbn">
+    <button>Submit</button>
+
+</form>
+<div>
+    <table border="3px">
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>ISBN</th>
+            <th>Action</th>
+        </tr>
+        <tbody id="tbdy">
+      
+    </tbody>
+    </table>
+</div>
+</div>
+<script src="/Scriptz/bookzOp.js"></script> 
+</body>
+</html>

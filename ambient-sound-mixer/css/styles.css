@@ -1,0 +1,341 @@
+/* Custom CSS for Ambient Sound Mixer */
+
+/* CSS Variables for Theming */
+:root {
+    --bg-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.8);
+}
+
+
+/* Light Theme */
+body.light-theme {
+    background: linear-gradient(135deg, #ffeaa7 0%, #74b9ff 50%, #a29bfe 100%) !important;
+}
+
+body.light-theme * {
+    color: #2d3436;
+}
+
+body.light-theme .text-white {
+    color: #2d3436 !important;
+}
+
+body.light-theme .bg-white\/10 {
+    background-color: rgba(255, 255, 255, 0.7) !important;
+}
+
+body.light-theme .bg-white\/20:hover {
+    background-color: rgba(255, 255, 255, 0.9) !important;
+}
+
+body.light-theme .border-white\/20 {
+    border-color: rgba(0, 0, 0, 0.2) !important;
+}
+
+body.light-theme .border-white\/30 {
+    border-color: rgba(0, 0, 0, 0.3) !important;
+}
+
+body.light-theme .text-white\/60 {
+    color: rgba(45, 52, 54, 0.6) !important;
+}
+
+body.light-theme input[type="range"]::-webkit-slider-track {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+body.light-theme input[type="range"]::-moz-range-track {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+/* Glassmorphism Effect */
+.glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+}
+
+/* Sound Card Animations */
+.sound-card {
+    animation: fadeInUp 0.5s ease-out;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.sound-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Active Sound Indicator */
+.sound-active {
+    position: relative;
+    overflow: hidden;
+}
+
+.sound-active::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    animation: shimmer 2s infinite;
+}
+
+/* Visual Equalizer Bars */
+.equalizer {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 30px;
+}
+
+.equalizer-bar {
+    width: 4px;
+    background: linear-gradient(to top, #a855f7, #ec4899);
+    border-radius: 2px;
+    animation: dance 0.6s ease-in-out infinite;
+}
+
+.equalizer-bar:nth-child(1) { animation-delay: 0s; }
+.equalizer-bar:nth-child(2) { animation-delay: 0.1s; }
+.equalizer-bar:nth-child(3) { animation-delay: 0.2s; }
+.equalizer-bar:nth-child(4) { animation-delay: 0.3s; }
+.equalizer-bar:nth-child(5) { animation-delay: 0.4s; }
+
+/* Custom Range Slider */
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-track {
+    background: rgba(255, 255, 255, 0.2);
+    height: 6px;
+    border-radius: 3px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    background: linear-gradient(135deg, #a855f7, #ec4899);
+    height: 18px;
+    width: 18px;
+    border-radius: 50%;
+    margin-top: -6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+input[type="range"]::-moz-range-track {
+    background: rgba(255, 255, 255, 0.2);
+    height: 6px;
+    border-radius: 3px;
+}
+
+input[type="range"]::-moz-range-thumb {
+    background: linear-gradient(135deg, #a855f7, #ec4899);
+    height: 18px;
+    width: 18px;
+    border-radius: 50%;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease;
+}
+
+input[type="range"]::-moz-range-thumb:hover {
+    transform: scale(1.2);
+}
+
+/* Pulse Animation for Playing Sounds */
+.pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Modal Animation */
+.modal-enter {
+    animation: modalEnter 0.3s ease-out;
+}
+
+/* Preset Button Active State */
+  .preset-active {
+    background: linear-gradient(135deg, #a855f7,
+  #ec4899) !important;
+    transform: scale(1.05);
+  }
+
+/* Loading Spinner */
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #a855f7;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes shimmer {
+    100% {
+        left: 100%;
+    }
+}
+
+@keyframes dance {
+    0%, 100% {
+        height: 5px;
+    }
+    50% {
+        height: 100%;
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+@keyframes modalEnter {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Responsive Design Adjustments */
+@media (max-width: 640px) {
+    .sound-card {
+        min-height: 180px;
+    }
+    
+    input[type="range"] {
+        width: 100% !important;
+    }
+}
+
+/* Smooth Transitions for Theme Changes */
+body {
+    transition: background 0.5s ease, color 0.5s ease;
+}
+
+/* Icon Animations */
+.icon-bounce {
+    animation: bounce 1s ease-in-out infinite;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+/* Volume Bar Visualization */
+.volume-bar {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+}
+
+.volume-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #a855f7, #ec4899);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+}
+
+/* Timer Progress */
+.timer-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.1);
+    z-index: 100;
+}
+
+.timer-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #a855f7, #ec4899);
+    transition: width 1s linear;
+}
+
+/* Tooltip Styles */
+.tooltip {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+/* Sound Icon Styles */
+.sound-icon {
+    font-size: 2rem;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #a855f7, #ec4899);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #9333ea, #db2777);
+}
