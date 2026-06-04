@@ -12,6 +12,7 @@ class AmbientMixer {
         this.timer = null;
         this.currentSoundState = {};
         this.isInitialized = false;
+        this.masterVolume = 100;
     }
 
     init() {
@@ -40,23 +41,48 @@ class AmbientMixer {
             if (e.target.closest(".play-btn")) {
                 const soundID = e.target.closest(".play-btn").dataset.sound;
                 // console.log(soundID);
-               await this.toggleSound(soundID);
+                await this.toggleSound(soundID);
             }
 
         });
 
         // Handle volume slider changes:
-        document.addEventListener("input", (e)=>{
-            
-            if(e.target.classList.contains("volume-slider")){
+        document.addEventListener("input", (e) => {
+
+            if (e.target.classList.contains("volume-slider")) {
                 const soundId = e.target.dataset.sound;
-                
+
                 const volume = parseInt(e.target.value)
                 this.setsoundVolume(soundId, volume);
-                console.log(`sound Id is: ${soundId} \n sound volume is: ${volume}`);
+                // console.log(`sound Id is: ${soundId} \n sound volume is: ${volume}`);
             }
-        })
+        });
 
+        // Handle master volume slider
+        const masterVolumeSlider = document.getElementById("masterVolume"); 
+        if (masterVolumeSlider) {
+            masterVolumeSlider.addEventListener("input", (e) => {
+                const volume = parseInt(e.target.value);
+                this.setMasterVolume(volume);
+            });
+        }
+
+        // Handle master play/pause button:
+        if (this.ui.playPauseButton) {
+            this.ui.playPauseButton.addEventListener("click", () => {
+                console.log("playPauseButton clicked!");
+                this.toggleAllSounds();
+            });
+        }
+
+        // Handle the reset button
+        if (this.ui.resetButton) {
+            this.ui.resetButton.addEventListener("click", () => {
+                console.log("reset button clicked!");
+
+                this.resetAll();
+            });
+        }
 
     }
 
@@ -74,21 +100,21 @@ class AmbientMixer {
     }
 
     // Toggle sounds
-    async toggleSound(soundId){
+    async toggleSound(soundId) {
         const audio = this.soundManager.audioElements.get(soundId);
-        if(!audio){
+        if (!audio) {
             console.error(`Sound ${soundId} not found!`);
             return false;
         }
-        if(audio.paused){
+        if (audio.paused) {
             // Get the current slider value
             const card = document.querySelector(`[data-sound="${soundId}"]`);
             const slider = card.querySelector(".volume-slider");
             let volume = parseInt(slider.value);
 
-            // If hte slider is at 0, default to 50%
-            if(volume === 0){
-                volume=50;
+            // If the slider is at 0, default to 50%
+            if (volume === 0) {
+                volume = 50;
                 this.ui.updateVolumeDisplay(soundId, volume);
             }
             // Sound is off, turn it on
@@ -97,20 +123,132 @@ class AmbientMixer {
             // @todo update play button
             this.ui.updateSoundPlayButton(soundId, true);
 
-        }else{
+        } else {
             // Sound is on, shut it off!
             this.soundManager.pauseSound(soundId);
             // @todo Update play button
             this.ui.updateSoundPlayButton(soundId, false);
         }
+        // Update main play button state
+        this.updateMainPlayButtonState();
     }
+
+    // Toggle all sounds 
+    toggleAllSounds() {
+
+        if (this.soundManager.isplaying) {
+            // Toggle sounds off
+            this.soundManager.pauseAll();
+            this.ui.updateMainPlayButton(false);
+            sounds.forEach((sound) => {
+                this.ui.updateSoundPlayButton(sound.id, false);
+            });
+        } else {
+            // Toggle sounds on
+            for (const [soundId, audio] of this.soundManager.audioElements) {
+                const card = document.querySelector(`[data-sound=${soundId}]`);
+                const slider = card?.querySelector(".volume-slider");
+
+                if (slider) {
+                    let volume = parseInt(slider.value);
+                    if (volume === 0) {
+                        volume = 50;
+                        slider.value = 50
+                        this.ui.updateVolumeDisplay(soundId, 50);
+                    }
+
+                    this.currentSoundState[soundId] = volume;
+                    const effectiveVolume = (volume * this.masterVolume) / 100;
+                    audio.volume = effectiveVolume / 100;
+                    this.ui.updateSoundPlayButton(soundId, true);
+                }
+            }
+            // Play all sounds:
+            this.soundManager.playAll();
+            this.ui.updateMainPlayButton(true);
+        }
+    }
+
+
     // Set sound volume:
-    setsoundVolume(soundId, volume){
-        // Update sound volume in manager:
-        this.soundManager.setVolume(soundId, volume);
+    setsoundVolume(soundId, volume) {
+        //    Calculate effective volume with master volume
+        const effectiveVolume = (volume * this.masterVolume) / 100;
+        // Update the sond volume  with scaled volume
+        const audio = this.soundManager.audioElements.get(soundId);
+        if (audio) {
+            audio.volume = effectiveVolume / 100;
+        }
+
         // Update display
         this.ui.updateVolumeDisplay(soundId, volume);
+
+
+        // Sync sounds
+        this.updateMainPlayButtonState();
     }
+    // Set master volume:
+    setMasterVolume(volume) {
+        this.masterVolume = volume;
+
+        // Update the display:
+        const masterVolumeValue = document.getElementById("masterVolumeValue");
+        if (masterVolumeValue) {
+            masterVolumeValue.textContent = `${volume}%`;
+        }
+        // Apply master volume to all currelty playing sounds
+
+        this.applyMasterVolumeToAll();
+
+    }
+    // Apply master volume to all playing sounds
+    applyMasterVolumeToAll() {
+        for (const [soundId, audio] of this.soundManager.audioElements) {
+            if (!audio.paused) {
+                const card = document.querySelector(`[data-sound="${soundId}"]`);
+                const slider = card?.querySelector(".volume-slider");
+                if (slider) {
+                    const individualVolume = parseInt(slider.value);
+                    // Calculate effective volume (individual * master / 100)
+                    const effectiveVolume = (individualVolume * this.masterVolume) / 100;
+
+                    // Apply to the actual audio element   
+                    audio.volume = effectiveVolume / 100;
+                }
+            }
+        }
+    }
+
+    // Update main play button based on individual sounds:
+    updateMainPlayButtonState() {
+        // Check if any sounds are playing:
+        let anySoundsPlaying = false;
+        for (const [soundId, audio] of this.soundManager.audioElements) {
+            if (!audio.paused) {
+                anySoundsPlaying = true;
+                break;
+            }
+
+        }
+        // Update the main button and internal state 
+        this.soundManager.isplaying = anySoundsPlaying;
+        this.ui.updateMainPlayButton(anySoundsPlaying);
+
+    }
+
+    // Rest everything to default state:
+    resetAll() {
+        // Stop all sounds
+        this.soundManager.stopAll();
+
+        // Reset master volume
+        this.masterVolume = 100;
+
+        // Reset UI
+        this.ui.resetUI();
+        console.log("All sounds and settings reset");
+    }
+
 }
 
 // Initialize app when the DOM is ready!

@@ -28,7 +28,7 @@ export class SoundManager {
         if (audio) {
             try {
                 await audio.play();
-                console.log(`Playing: ${soundId}`);
+                // console.log(`Playing: ${soundId}`);
                 return true;
             } catch (error) {
                 console.error(`Failed to play ${soundId} \n`, error);
@@ -41,10 +41,10 @@ export class SoundManager {
     pauseSound(soundId) {
         try {
             const audio = this.audioElements.get(soundId);
-            console.log("hit pause fun!");
+            // console.log("hit pause fun!");
             if (audio && !audio.paused) {
                 audio.pause();
-                console.log(`paused: ${soundId}`);
+                // console.log(`paused: ${soundId}`);
             }
         } catch (error) {
             console.error(`Error in pausing sound! \n`, error);
@@ -61,8 +61,46 @@ export class SoundManager {
         }
         // Convert 0-100 to 0-1
         audio.volume = volume / 100;
-        console.log(`Volume for ${soundId}: ${volume}`);
+        // console.log(`Volume for ${soundId}: ${volume}`);
         return true;
+    }
+
+    // Play all sounds:
+
+    playAll() {
+        for (const [soundId, audio] of this.audioElements) {
+            if (audio.paused) {
+                audio.play();
+            }
+        }
+        this.isplaying = true;
+        
+    }
+    // Pause all sounds:
+
+    pauseAll() {
+        for (const [soundId, audio] of this.audioElements) {
+            if (!audio.paused) {
+                audio.pause();
+            }
+        }
+        this.isplaying = false;
+
+    }
+
+    // Stop all sounds:  
+
+    stopAll() {
+        for (const [soundId, audio] of this.audioElements) {
+            if (!audio.paused) {
+                audio.pause();
+            }
+            // Reset to beginning:
+            audio.currentTime = 0;
+            
+        }
+        this.isplaying = false;
+
     }
 
 }

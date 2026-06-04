@@ -113,4 +113,49 @@ export class UI {
 
         }
     }
+
+    // Update main play/pause buttons
+    updateMainPlayButton(isPlaying){
+        const icon = this.playPauseButton.querySelector("i");
+
+        if(isPlaying){
+            icon.classList.remove("fa-play");
+            icon.classList.add("fa-pause");
+        }else{
+             icon.classList.add("fa-play");
+            icon.classList.remove("fa-pause");
+        }
+    }
+
+
+    // Reset all UI elements to the default state:
+
+    resetUI(){
+        // Reset sliders to 0
+        const sliders = document.querySelectorAll(".volume-slider");
+        sliders.forEach((slider)=>{
+            slider.value = 0;
+            const soundId = slider.dataset.sound;
+            this.updateVolumeDisplay(soundId, 0);
+
+        });
+        // Reset all playbuttons to paly state:
+        const playButtons = document.querySelectorAll(".play-btn");
+        playButtons.forEach((btn)=>{
+          const icon = btn.querySelector("i");
+          icon.classList.remove("fa-pause");  
+          icon.classList.add("fa-play");  
+        });
+        // Remove palying class:
+        const cards = document.querySelectorAll(".sound-card");
+        cards.forEach((card)=>{
+            card.classList.remove("fa-playing");
+        });
+        // Reset the main play/pause button
+        this.updateMainPlayButton(false);
+
+        // Reset mater volume to 100%
+        this.masterVolumeSlider.value = 100;
+        this.masterVolumeValue.textContent = "100%";
+    }
 }
