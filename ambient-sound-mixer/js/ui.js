@@ -50,7 +50,7 @@ export class UI {
     <div class=" flex-1 flex flex-col justify-center">
         <div class="flex items-center space-x-3">
             <i class="fas fa-volume-low opacity-50"></i>
-            <input type="range" class="volume-slider flex-1" min="0" max="100" value="0" data-sound="${sound.id}">
+            <input type="range" class=" volume-slider  flex-1 testclass" min="0" max="100" value="0" data-sound="${sound.id}">
             <span class="volume-value text-sm w-8 text-right">0</span>
         </div>
         <div class="volume-bar mt-3">
@@ -68,5 +68,49 @@ export class UI {
             this.soundCardsContainer.appendChild(card);
 
         });
+    }
+
+    // Update play/pause buttton for individual sounds:
+
+    updateSoundPlayButton(soundId, isPlaying) {
+        const card = document.querySelector(`[data-sound="${soundId}"]`);
+        if (card) {
+            const playBtn = card.querySelector(".play-btn");
+            const icon = playBtn.querySelector("i");
+            if (isPlaying) {
+                icon.classList.remove("fa-play");
+                icon.classList.add("fa-pause");
+                card.classList.add("playing");
+            } else {
+                icon.classList.add("fa-play");
+                icon.classList.remove("fa-pause");
+                card.classList.remove("playing");
+            }
+        }
+
+    }
+
+    // Update volume display for a sound
+    updateVolumeDisplay(soundID, volume) {
+        const card = document.querySelector(`[data-sound="${soundID}"]`);
+        if (card) {
+            // Update the number display:
+            const volumeValue = card.querySelector(".volume-value");
+            if (volumeValue) {
+                volumeValue.textContent = volume;
+            }
+            // Update volume bar visual:
+            const volumeBarFill = card.querySelector(".volume-bar-fill");
+            if(volumeBarFill){
+                volumeBarFill.style.width = `${volume}%`;
+            }
+
+            // Update slider position:
+            const slider = card.querySelector(".volume-slider");
+            if(slider){
+                slider.value = volume;
+            }
+
+        }
     }
 }
