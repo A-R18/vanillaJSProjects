@@ -107,9 +107,9 @@ export const defaultPrests = {
         name: "Sleep",
         icon: "fa-bed",
         sounds: {
-            rain: 40,
-            cafe: 30,
-            wind: 15
+            rain: 12,
+            cafe: 15,
+            night: 35
         }
     }
 }

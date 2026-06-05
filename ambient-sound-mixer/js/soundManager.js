@@ -102,7 +102,4 @@ export class SoundManager {
         this.isplaying = false;
 
     }
-
 }
-
-

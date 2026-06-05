@@ -60,6 +60,22 @@ export class UI {
 </div>`;
         return card;
     }
+
+    // Create custom preset button:
+    createCustomPresetButton(name, presetId) {
+        const button = document.createElement("button");
+        button.className = "custom-preset-btn bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg transition-all duration-300 relative group";
+        button.dataset.preset = presetId;
+        button.innerHTML = `<i class="fas fa-star mr-2 text-yellow-400"></i> ${name}
+<button type="button"
+    class="delete-preset absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+    data-preset="${presetId}">
+    <i class="fas fa-times text-xs text-white"></i> 
+</button>`;
+        return button;
+
+    }
+
     // Render all sound cards
     renderSoundCards(sounds) {
         this.soundCardsContainer.innerHTML = "";
@@ -101,13 +117,13 @@ export class UI {
             }
             // Update volume bar visual:
             const volumeBarFill = card.querySelector(".volume-bar-fill");
-            if(volumeBarFill){
+            if (volumeBarFill) {
                 volumeBarFill.style.width = `${volume}%`;
             }
 
             // Update slider position:
             const slider = card.querySelector(".volume-slider");
-            if(slider){
+            if (slider) {
                 slider.value = volume;
             }
 
@@ -115,14 +131,14 @@ export class UI {
     }
 
     // Update main play/pause buttons
-    updateMainPlayButton(isPlaying){
+    updateMainPlayButton(isPlaying) {
         const icon = this.playPauseButton.querySelector("i");
 
-        if(isPlaying){
+        if (isPlaying) {
             icon.classList.remove("fa-play");
             icon.classList.add("fa-pause");
-        }else{
-             icon.classList.add("fa-play");
+        } else {
+            icon.classList.add("fa-play");
             icon.classList.remove("fa-pause");
         }
     }
@@ -130,10 +146,10 @@ export class UI {
 
     // Reset all UI elements to the default state:
 
-    resetUI(){
+    resetUI() {
         // Reset sliders to 0
         const sliders = document.querySelectorAll(".volume-slider");
-        sliders.forEach((slider)=>{
+        sliders.forEach((slider) => {
             slider.value = 0;
             const soundId = slider.dataset.sound;
             this.updateVolumeDisplay(soundId, 0);
@@ -141,14 +157,14 @@ export class UI {
         });
         // Reset all playbuttons to paly state:
         const playButtons = document.querySelectorAll(".play-btn");
-        playButtons.forEach((btn)=>{
-          const icon = btn.querySelector("i");
-          icon.classList.remove("fa-pause");  
-          icon.classList.add("fa-play");  
+        playButtons.forEach((btn) => {
+            const icon = btn.querySelector("i");
+            icon.classList.remove("fa-pause");
+            icon.classList.add("fa-play");
         });
         // Remove palying class:
         const cards = document.querySelectorAll(".sound-card");
-        cards.forEach((card)=>{
+        cards.forEach((card) => {
             card.classList.remove("fa-playing");
         });
         // Reset the main play/pause button
@@ -158,4 +174,42 @@ export class UI {
         this.masterVolumeSlider.value = 100;
         this.masterVolumeValue.textContent = "100%";
     }
+    // Show save preset modal
+
+    showModal() {
+        this.modal.classList.remove("hidden");
+        this.modal.classList.add("flex");
+        document.getElementById("presetName").focus();
+
+    }
+
+    hideModal() {
+        this.modal.classList.add("hidden");
+        this.modal.classList.remove("flex");
+        document.getElementById("presetName").value = "";
+
+    }
+
+    // Add custom preset to UI
+    addCustomPreset(name, presetId) {
+        const button = this.createCustomPresetButton(name, presetId);
+        this.customPresetsContainer.appendChild(button);
+    }
+
+
+    // Highlight active preset
+    setActivePreset(presetKey) {
+        //Remove active class from all buttons
+        document.querySelectorAll(".preset-btn, .custom-preset-btn").forEach(btn => {
+            btn.classList.remove("preset-active");
+
+        });
+
+        // add active class to selected presets
+        const activeButton = document.querySelector(`.preset-btn[data-preset="${presetKey}"], .custom-preset-btn[data-preset="${presetKey}"]`);
+        if (activeButton) {
+            activeButton.classList.add("preset-active");
+        }
+    }
+
 }
