@@ -81,7 +81,7 @@ export class SoundManager {
     pauseAll() {
         for (const [soundId, audio] of this.audioElements) {
             if (!audio.paused) {
-                audio.pause();
+                audio.pause(soundId);
             }
         }
         this.isplaying = false;
@@ -93,7 +93,7 @@ export class SoundManager {
     stopAll() {
         for (const [soundId, audio] of this.audioElements) {
             if (!audio.paused) {
-                audio.pause();
+                audio.pause(soundId);
             }
             // Reset to beginning:
             audio.currentTime = 0;

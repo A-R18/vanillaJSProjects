@@ -212,4 +212,50 @@ export class UI {
         }
     }
 
+
+    // Remove cusom preset from UI
+    removeCustomPreset(presetId) {
+        const button = document.querySelector(`.custom-preset-btn[data-preset="${presetId}"]`);
+        if (button) {
+            button.remove();
+        }
+    }
+
+    // Update timer display
+    updateTimerDisplay(minutes, seconds) {
+       try {
+         if (this.timerDisplay) {
+            // console.log(`Display updated!`);
+            console.log(minutes);
+            if (minutes > 0 || seconds > 0) {
+                const formattedTime = `${Math.trunc(minutes).toString().padStart(2, "0")} : ${seconds.toString().padStart(2, "0")}`;
+                console.log(formattedTime);
+                this.timerDisplay.textContent = formattedTime;
+                this.timerDisplay.classList.remove("hidden");
+            } else {
+                this.timerDisplay.classList.add("hidden");
+            }
+
+        }
+       } catch (error) {
+        console.error(`Error is ${error}`);
+       }
+    }
+
+
+    toggleTheme() {
+        const body = document.body;
+        const icon = this.themeToogle.querySelector("i");
+
+        if (body.classList.contains("light-theme")) {
+            body.classList.remove("light-theme");
+            icon.classList.replace("fa-moon", "fa-sun");
+
+        } else {
+            body.classList.add("light-theme");
+            icon.classList.replace("fa-sun", "fa-moon");
+
+        }
+    }
+
 }

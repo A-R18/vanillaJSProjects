@@ -2,6 +2,7 @@ import { sounds, defaultPrests } from "./soundData.js";
 import { SoundManager } from "./soundManager.js";
 import { presetManager } from "./presetManager.js";
 import { UI } from "./ui.js";
+import { Timer } from "./timer.js";
 
 class AmbientMixer {
     // Initialize dependiencies & default state
@@ -10,7 +11,10 @@ class AmbientMixer {
         this.soundManager = new SoundManager();
         this.ui = new UI();
         this.presetManager = new presetManager();
-        this.timer = null;
+        this.timer = new Timer(
+            () => this.onTimerComplete(),
+            (minutes, seconds) => this.ui.updateTimerDisplay(minutes, seconds)
+        );
         this.currentSoundState = {};
         this.isInitialized = false;
         this.masterVolume = 100;
@@ -54,6 +58,14 @@ class AmbientMixer {
                 const soundID = e.target.closest(".play-btn").dataset.sound;
                 // console.log(soundID);
                 await this.toggleSound(soundID);
+            }
+
+            // Check if delete button was clicked
+            if (e.target.closest(".delete-preset")) {
+                e.stopPropagation();
+                const presetId = e.target.closest(".delete-preset").dataset.preset;
+                this.deleteCustomPreset(presetId);
+                return;
             }
 
             // Check if a default preset button was clicked
@@ -144,6 +156,30 @@ class AmbientMixer {
                     this.ui.hideModal();
                 }
             });
+        }
+
+        // Timer select
+
+        const timerSelect = document.getElementById("timerSelect");
+        if (timerSelect) {
+            timerSelect.addEventListener("change", (e) => {
+                const minutes = parseInt(e.target.value);
+                console.log("Minutes are: \n", minutes);
+                // const minutes = 0.2;
+                if (minutes > 0) {
+                    this.timer.start(minutes);
+                    console.log(`Tmer started for ${minutes} minutes`);
+                } else {
+                    this.timer.stop();
+                }
+            });
+        }
+
+        // Theme toggle
+        if (this.ui.themeToogle) {
+            this.ui.themeToogle.addEventListener("click", () => {
+                this.ui.toggleTheme();
+            })
         }
 
     }
@@ -316,13 +352,18 @@ class AmbientMixer {
         // Reset master volume
         this.masterVolume = 100;
 
+        // Reset Timer
+        this.timer.stop();
+        if (this.ui.timerSelect) {
+            this.ui.timerSelect.value = "0"
+        }
         // Reset active state:
         this.ui.setActivePreset(null);
-
-        // Reset sonund states
+ 
+        // Reset sound states
         sounds.forEach((sound) => {
             this.currentSoundState[sound.id] = 0;
-        })
+        });
 
         // Reset UI
         this.ui.resetUI();
@@ -378,7 +419,7 @@ class AmbientMixer {
 
         // Set active preset
 
-        if(presetKey){
+        if (presetKey) {
             this.ui.setActivePreset(presetKey);
         }
 
@@ -426,7 +467,46 @@ class AmbientMixer {
 
     }
 
+    // Delete custom preset
+    deleteCustomPreset(presetId) {
+        try {
+            
+            if (this.presetManager.deletePreset(presetId)) {
+                this.ui.removeCustomPreset(presetId);
+                console.log(`Preset ${presetId} deleted!`);
+            }
+        } catch (error) {
+            console.error(`Error in deleting preset:  ${error}`);
+        }
+    }
 
+
+    // Timer complete callback
+    onTimerComplete() {
+        try {
+            // stop all sounds
+            this.soundManager.pauseAll();
+            this.ui.updateMainPlayButton(false);
+
+            // Update the individual buttons
+            sounds.forEach((sound) => {
+                this.ui.updateSoundPlayButton(sound.id, false);
+            });
+            // Reset timer dropdown
+
+            const timerSelect = document.getElementById("timerSelect");
+            if (timerSelect) {
+                timerSelect.value = "0";
+            }
+            // Clear and hide timer display
+            if (this.ui.timerDisplay) {
+                this.ui.timerDisplay.textContent = "";
+                this.ui.timerDisplay.classList.add("hidden");
+            }
+        } catch (error) {
+            console.log(`Error is: ${error}`);
+        }
+    }
 }
 
 // Initialize app when the DOM is ready!

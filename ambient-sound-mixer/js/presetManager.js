@@ -10,7 +10,7 @@ export class presetManager {
     }
 
     // Load custom preset by ID
-    loadPreset(presetId){
+    loadPreset(presetId) {
         return this.customPresets[presetId] || null;
     }
 
@@ -21,7 +21,7 @@ export class presetManager {
 
     // Save current mix as preset:
     savePreset(name, soundStates) {
-        const presetId = `custom-${Date.now() * Math.floor(Math.random()+ 1) }`
+        const presetId = `custom-${Date.now() * Math.floor(Math.random() + 1)}`
         // Create preset object with only active sounds:
         const preset = {
             name,
@@ -41,5 +41,20 @@ export class presetManager {
     // check if preset name already exists
     presetNAmeExists(name) {
         return Object.values(this.customPresets).some((preset) => preset.name === name);
+    }
+
+    // Delete a custom preset
+    deletePreset(presetId) {
+        try {
+           
+            if (this.customPresets[presetId]) {
+                delete this.customPresets[presetId];
+                this.saveCustomPresets();
+                return true;
+            }
+            return false;
+        } catch (error) {
+            console.log(`Error in delete preset fun is: \n ${error}`);
+        }
     }
 }
